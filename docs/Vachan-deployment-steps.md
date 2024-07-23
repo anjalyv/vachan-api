@@ -79,6 +79,22 @@ VACHAN_AI_CRON_HOUR=<hour>
 VACHAN_AI_CRON_MINUTE=<minute>
 VACHAN_AI_DATA_PATH=<ai_data_path>
 ```
+## To Down the App
+
+For Staging:
+
+```
+docker compose -f docker-compose-staging.yml --profile deployment --env-file prod.env down
+```
+
+For Production:
+
+```
+docker compose -f docker-compose-production.yml --profile deployment --env-file prod.env down
+```
+
+
+`
 
 ```
 
@@ -105,7 +121,6 @@ refernce: https://zellwk.com/blog/github-actions-deploy/
 ## Add SSL
 
 Referenced article: https://mindsers.blog/post/https-using-nginx-certbot-docker/
-
 
 
 

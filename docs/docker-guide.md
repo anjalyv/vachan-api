@@ -58,6 +58,7 @@ To turn the app down, use
 
 ```docker compose -f docker-compose-staging.yml --profile local-run down```
 
+
 ## To run tests
 
 This method is recommended to just run all the tests once to make sure everything works, like in production, CI/CD or locally when verifying a PR. While doing local development and when we may have to run tests selectively and multiple times, after code changes, use the method specificed in [readme](../README.md#set-up-locally-for-development-and-testingwithout-docker).
@@ -141,6 +142,21 @@ For Production:
 docker compose -f docker-compose-production.yml --env-file=prod.env --profile deployment up --build --force-recreate -d
 ```
 
+## To Down the App
+
+For Staging:
+
+```
+docker compose -f docker-compose-staging.yml --profile deployment --env-file prod.env down
+```
+
+For Production:
+
+```
+docker compose -f docker-compose-production.yml --profile deployment --env-file prod.env down
+```
+
+
 ### To re-deploy on server
 
 After git pull, running the same command above, will re-build and re-start the containers.
@@ -171,7 +187,7 @@ To clear all user data, remove the volume `kratos-postgres-vol`, on local or on 
 
 Some useful commands for the above tasks
 ```
-docker compose down
+docker compose -f docker-compose-staging.yml down
 
 docker ps # list all running containers
 docker ps -a # list all running and stopped containers
