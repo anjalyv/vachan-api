@@ -36,40 +36,40 @@ If you have already set up the repo and remotes for development, pull latest cod
 
 VACHAN_SUPER_USERNAME, VACHAN_SUPER_PASSWORD are the minimum required environment variables. This can either be set in the `~/.bashrc` file or save in a local `.env` file and passed via command line.
 ```
-  export VACHAN_SUPER_USERNAME="<super-admin-emial-id>"
+  export VACHAN_SUPER_USERNAME="<super-admin-email-id>"
   export VACHAN_SUPER_PASSWORD="<a-strong-password>"
 ```
 The username should be your email id and password must be a strong password.
 
 If you just want to setup and start app locally, from the vachan-api/docker folder, do
 
-```docker compose --profile local-run up```
+```docker compose -f docker-compose-staging.yml --profile local-run up```
  
 or
 
-```docker compose --env-file=path/to/file.env --profile local-run up```
+```docker compose -f docker-compose-staging.yml --env-file=path/to/file.env --profile local-run up```
 
-If all goes well you should be able to get proper outputs at `http://localhost`, `http://localhost/docs`, `http://localhost/v2/demos`, 
-`http://127.0.0.1:4434/identities` and connect to postgresDB at `localhost`, `5433`
+If all goes well you should be able to get proper outputs at `http://localhost`, `http://localhost/docs`,
+`http://localhost/v2/cms/rest/docs`,`http://localhost/v2/text/translate/token-based/docs`,`http://localhost/v2/auth/docs`,`http://localhost//v2/ai/docs`,`http://localhost/v2/graphql`,`http://localhost/v2/demos`,`http://127.0.0.1:4434/identities`  and connect to postgresDB at `localhost`, `5433`
 
 (Error reports from Kratos container related to failed email sending can be ignored as long as above URLs are accessible).
 
 To turn the app down, use
 
-```docker compose --profile local-run down```
+```docker compose -f docker-compose-staging.yml --profile local-run down```
 
 ## To run tests
 
 This method is recommended to just run all the tests once to make sure everything works, like in production, CI/CD or locally when verifying a PR. While doing local development and when we may have to run tests selectively and multiple times, after code changes, use the method specificed in [readme](../README.md#set-up-locally-for-development-and-testingwithout-docker).
 
 ```
-docker compose up # to start the dependancies
-docker compose run vachan-api-test --build
+docker compose -f docker-compose-staging.yml up # to start the dependancies
+docker compose -f docker-compose-staging.yml run vachan-api-test --build
 ```
 
 To turn down the running containers after test has been exited,
 
-```docker compose down```
+```docker compose -f docker-compose-staging.yml down```
 
 ## To deploy on server
 Install docker, docker-compose & git and set up the right repo and branch. 
@@ -87,23 +87,41 @@ VACHAN_DOMAIN=api.vachanengine.org
 VACHAN_KRATOS_PUBLIC_URL="http://api.vachanengine.org:4433/"
 VACHAN_KRATOS_ADMIN_URL="http://api.vachanengine.org:4434/"
 VACHAN_POSTGRES_PASSWORD="<a-strong-password>"
-
 VACHAN_KRATOS_DB_USER="<vachan_auth_user>"
 VACHAN_KRATOS_DB_PASSWORD="<a-strong-password>"
 VACHAN_KRATOS_DB_NAME="<vachan_auth_db>"
 VACHAN_GITLAB_TOKEN="<api-token-from-gitlab>"
 VACHAN_REDIS_PASS="<a-strong-password>"
-
+VACHAN_AI_DELETION_PERIOD=<no_of_days>
+VACHAN_AI_CRON_DAY=<no_of_days>
+VACHAN_AI_CRON_HOUR=<hour>
+VACHAN_AI_CRON_MINUTE=<minute>
+VACHAN_AI_DATA_PATH=<ai_data_path>
 ```
 Once the ENV file is ready, pass it to CLI and start the services as below:
+
+For Staging:
 ```
-docker compose --env-file=prod.env --profile deployment up --build --force-recreate -d
+docker compose -f docker-compose-staging.yml --env-file=prod.env --profile deployment up --build --force-recreate -d
+```
+
+For Production:
+```
+docker compose -f docker-compose-production.yml --env-file=prod.env --profile deployment up --build --force-recreate -d
 ```
 
 To re-create SSL certificates, follow instructions [here](https://mindsers.blog/post/https-using-nginx-certbot-docker/)
 
+For Staging:
+
 ```
-docker compose --profile deployment run --rm certbot renew
+docker compose  -f docker-compose-staging.yml --profile deployment run --rm certbot renew
+```
+
+For Production:
+
+```
+docker compose  -f docker-compose-production.yml --profile deployment run --rm certbot renew
 ```
 
 After this make sure the certificate folder in the app root has access permission. or change it with `sudo chmod -R 777 certbot/`. Then the App needs to be restarted as shown below to use the updated ceritifcate.
@@ -112,7 +130,15 @@ After this make sure the certificate folder in the app root has access permissio
 
 ```
 cd ~/vachan-api/docker
-docker compose --env-file=prod.env --profile deployment up --build --force-recreate -d
+```
+For Staging: 
+```
+docker compose -f docker-compose-staging.yml --env-file=prod.env --profile deployment up --build --force-recreate -d
+```
+
+For Production: 
+```
+docker compose -f docker-compose-production.yml --env-file=prod.env --profile deployment up --build --force-recreate -d
 ```
 
 ### To re-deploy on server
@@ -126,7 +152,17 @@ git pull origin <branch or tag>
 cd docker
 ```
 
-```docker compose --env-file=prod.env --profile deployment up --build --force-recreate -d```
+For Staging: 
+
+```
+docker compose -f docker-compose-staging.yml --env-file=prod.env --profile deployment up --build --force-recreate -d
+```
+
+For Production: 
+
+```
+docker compose -f docker-compose-production.yml --env-file=prod.env --profile deployment up --build --force-recreate -d
+```
 
 
 To start with a fresh DB, stop and remove containers and remove volume `vachan-db-vol`.
