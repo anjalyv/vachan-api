@@ -15,7 +15,7 @@ services:
     volumes: 
       - kratos-postgres-vol:/var/lib/postgresql/data
       - kratos-db-backup:/var/backups:rw
-        networks:
+    networks:
       - VE-network
 
  kratos-migrate:
