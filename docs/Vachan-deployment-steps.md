@@ -11,53 +11,39 @@ server: api.vachanengine.org(206.189.131.230)
 systemctl disable --now SERVICE-NAME
 ```
 
-## Setup repo
+## For settingup Vachan-API repo
 
-Decide a location and clone version-2 code(we have used /home/gitautodeploy)
+Decide a location and clone version-2 code(we have used /home/vachanproduction)
 
 ```
 git clone --branch <branchname> <remote-repo-url>
 git clone --branch version-2 https://github.com/Bridgeconn/vachan-api.git
 ```
-Copy prod.env file to vachan-api/docker
-Change the workflow file as per the decided location
-
-
-
-## Docker and docker-compose
-
-prefered versions
-docker: 24.0.1
-
-for docker installation, if required
-https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
-
-to remove sudo need
+After cloning, enter the following command to see the repo:
 ```
-> sudo groupadd docker
-> sudo usermod -aG docker $USER
-> newgrp docker
-> docker run hello-world #(to test)
+ls
 ```
 
-## Start App
+If we need to remove the repo from the server using the following command:
+```
+rm -rf vachan-api
 
 ```
-cd vachan-api/docker
+
+Next step is to include the `prod.env` file. First, navigate to the docker directory:
+```
+cd vachan-api
+cd docker
+touch prod.env
+
+```
+To dd the required environmental variables in the `prod.env`  or `.env`  file.
+```
+nano prod.env
+
 ```
 
-For Staging:
-```
-docker compose -f docker-compose-staging.yml --env-file prod.env --profile deployment up --build --force-recreate -d
-```
-
-For Production:
-```
-docker compose -f docker-compose-production.yml --env-file prod.env --profile deployment up --build --force-recreate -d
-```
-
-
-The environment values to be set in `prod.env` or `.env`  file and their expected format are:
+The environment values to be set in `prod.env` file and their expected format are:
 ```
 VACHAN_SUPER_USERNAME="<super-admin-email-id>"
 VACHAN_SUPER_PASSWORD="<a-strong-password>"
@@ -79,6 +65,55 @@ VACHAN_AI_CRON_HOUR=<hour>
 VACHAN_AI_CRON_MINUTE=<minute>
 VACHAN_AI_DATA_PATH=<ai_data_path>
 ```
+
+To see the contents of the `prod.env` file after editing, use the following command:
+```
+cat prod.env
+
+```
+
+
+
+
+
+## To install Docker and docker-compose
+
+Prefered versions
+docker: 24.0.1
+
+For docker installation, if required
+https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
+
+To avoid using `sudo` with Docker, follow these steps:
+```
+> sudo groupadd docker
+> sudo usermod -aG docker $USER
+> newgrp docker
+> docker run hello-world #(to test)
+```
+
+If you encounter a `sudo permission denied` error, contact the server team for assistance.
+
+
+## To start App
+
+```
+cd vachan-api/docker
+```
+
+For Staging:
+```
+docker compose -f docker-compose-staging.yml --profile deployment --env-file prod.env up --force-recreate --build -d
+```
+
+For Production:
+```
+docker compose -f docker-compose-production.yml --profile deployment --env-file prod.env up --force-recreate --build -d
+```
+
+Give correct path inside `web-server-with-cert` container inorder to avoid the errors related to the ssl path .
+If you encounter ssl related errors, contact the server team for assistance.
+
 ## To Down the App
 
 For Staging:
@@ -94,10 +129,6 @@ docker compose -f docker-compose-production.yml --profile deployment --env-file 
 ```
 
 
-`
-
-```
-
 ## Enable Auto deployment via github actions
 
 ### RSA Keys
@@ -108,8 +139,10 @@ docker compose -f docker-compose-production.yml --profile deployment --env-file 
    # (name the file github-actions
    # dont give passphrase)
 > cat github-actions.pub >> authorized_keys
+
 ```
 refernce: https://zellwk.com/blog/github-actions-deploy/
+
 
 ### Add secrets in github
 
@@ -118,9 +151,20 @@ refernce: https://zellwk.com/blog/github-actions-deploy/
 * SSH_KEY 
 
 
-## Add SSL
 
-Referenced article: https://mindsers.blog/post/https-using-nginx-certbot-docker/
+
+## To Add SSL
+
+Referenced article: 
+https://mindsers.blog/post/https-using-nginx-certbot-docker/
+
+Create an `ssl` folder in the home directory:
+
+```
+mkdir ssl
+```
+
+Copy the required files from your local machine to the RDS, then move them to the production server. You can use the `scp` or `mv` commands for this.
 
 
 
