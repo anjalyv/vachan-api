@@ -37,7 +37,7 @@ cd docker
 touch prod.env
 
 ```
-To dd the required environmental variables in the `prod.env`  or `.env`  file.
+To add the required environmental variables in the `prod.env`  or `.env`  file.
 ```
 nano prod.env
 
