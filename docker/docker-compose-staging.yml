@@ -133,45 +133,45 @@ services:
     networks:
      - VE-network
 
- vachan-api-test:
-  build:
-   context: ../
-   dockerfile: ./docker/Dockerfile
-  healthcheck:
-   timeout: 45s
-   interval: 10s
-   retries: 10
-  environment:
-   - VACHAN_POSTGRES_HOST=vachan-db
-   - VACHAN_POSTGRES_USER=${VACHAN_POSTGRES_USER:-postgres}
-   - VACHAN_POSTGRES_PASSWORD=${VACHAN_POSTGRES_PASSWORD:-password}
-   - VACHAN_POSTGRES_DATABASE=${VACHAN_POSTGRES_DATABASE:-vachan_dev}
-   - VACHAN_POSTGRES_PORT=5432
-   - VACHAN_KRATOS_PUBLIC_URL=http://kratos:4433/
-   - VACHAN_KRATOS_ADMIN_URL=http://kratos:4434/
-   - VACHAN_SUPER_USERNAME=${VACHAN_SUPER_USERNAME:-super@admin.com}
-   - VACHAN_GITLAB_TOKEN=${VACHAN_GITLAB_TOKEN}
-   - VACHAN_SUPER_PASSWORD=${VACHAN_SUPER_PASSWORD:-Just4Complexity!}
-   - VACHAN_TEST_MODE="False"
-   - VACHAN_LOGGING_LEVEL=INFO
-   - VACHAN_DOMAIN=${VACHAN_DOMAIN:-http://localhost:8000}
-  command: python -m pytest
-  volumes:
-   - logs-test-vol:/app/logs
-  restart: "no"
-  expose:
-   - 8000
-  links:
-   - vachan-db
-   - kratos
-  depends_on:
-   - kratos-postgresd
-   - kratos
-   - vachan-db
-  profiles:
-   - testing
-  networks:
-   - VE-network
+#  vachan-api-test:
+#   build:
+#    context: ../
+#    dockerfile: ./docker/Dockerfile
+#   healthcheck:
+#    timeout: 45s
+#    interval: 10s
+#    retries: 10
+#   environment:
+#    - VACHAN_POSTGRES_HOST=vachan-db
+#    - VACHAN_POSTGRES_USER=${VACHAN_POSTGRES_USER:-postgres}
+#    - VACHAN_POSTGRES_PASSWORD=${VACHAN_POSTGRES_PASSWORD:-password}
+#    - VACHAN_POSTGRES_DATABASE=${VACHAN_POSTGRES_DATABASE:-vachan_dev}
+#    - VACHAN_POSTGRES_PORT=5432
+#    - VACHAN_KRATOS_PUBLIC_URL=http://kratos:4433/
+#    - VACHAN_KRATOS_ADMIN_URL=http://kratos:4434/
+#    - VACHAN_SUPER_USERNAME=${VACHAN_SUPER_USERNAME:-super@admin.com}
+#    - VACHAN_GITLAB_TOKEN=${VACHAN_GITLAB_TOKEN}
+#    - VACHAN_SUPER_PASSWORD=${VACHAN_SUPER_PASSWORD:-Just4Complexity!}
+#    - VACHAN_TEST_MODE="False"
+#    - VACHAN_LOGGING_LEVEL=INFO
+#    - VACHAN_DOMAIN=${VACHAN_DOMAIN:-http://localhost:8000}
+#   command: python -m pytest
+#   volumes:
+#    - logs-test-vol:/app/logs
+#   restart: "no"
+#   expose:
+#    - 8000
+#   links:
+#    - vachan-db
+#    - kratos
+#   depends_on:
+#    - kratos-postgresd
+#    - kratos
+#    - vachan-db
+#   profiles:
+#    - testing
+#   networks:
+#    - VE-network
 
  vachan-demos:
     image: vachanengine/vachan-demos:v2.0.0-alpha.13
