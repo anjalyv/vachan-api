@@ -98,7 +98,9 @@ installing-docker:
 	fi
 
 run-app:
-	cd app && uvicorn main:app --port=7000 --debug --reload 
+	source vachan-ENV/bin/activate && \
+	cd app && \
+	uvicorn main:app --port=7000 --reload 
 
 
 setup:
