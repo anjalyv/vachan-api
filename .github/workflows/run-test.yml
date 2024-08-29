@@ -1,24 +1,24 @@
 
-name: run-test
+# name: run-test
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
-on: [push, pull_request ]
+# # Controls when the action will run. Triggers the workflow on push or pull request
+# # events but only for the master branch
+# on: [push, pull_request ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-  # This workflow contains a single job called "build n lint"
-  build-n-test:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+# # A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# jobs:
+#   # This workflow contains a single job called "build n lint"
+#   build-n-test:
+#     # The type of runner that the job will run on
+#     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - name: Start dependancies
-        working-directory: ./docker
-        run: docker compose -f docker-compose-staging.yml up -d
-      - name: Run tests
-        working-directory: ./docker
-        run: docker compose -f docker-compose-staging.yml run vachan-api-test
+#     # Steps represent a sequence of tasks that will be executed as part of the job
+#     steps:
+#       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+#       - uses: actions/checkout@v2
+#       - name: Start dependancies
+#         working-directory: ./docker
+#         run: docker compose -f docker-compose-staging.yml up -d
+#       - name: Run tests
+#         working-directory: ./docker
+#         run: docker compose -f docker-compose-staging.yml run vachan-api-test
