@@ -59,7 +59,7 @@ To turn the app down, use
 ```docker compose -f docker-compose-staging.yml --profile local-run down```
 
 
-## To run tests
+<!-- ## To run tests
 
 This method is recommended to just run all the tests once to make sure everything works, like in production, CI/CD or locally when verifying a PR. While doing local development and when we may have to run tests selectively and multiple times, after code changes, use the method specificed in [readme](../README.md#set-up-locally-for-development-and-testingwithout-docker).
 
@@ -70,7 +70,7 @@ docker compose -f docker-compose-staging.yml run vachan-api-test --build
 
 To turn down the running containers after test has been exited,
 
-```docker compose -f docker-compose-staging.yml down```
+```docker compose -f docker-compose-staging.yml down``` -->
 
 ## To deploy on server
 Install docker, docker-compose & git and set up the right repo and branch. 
