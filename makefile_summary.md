@@ -20,7 +20,7 @@
 - installing-psql:: Checks if PostgreSQL version 15.3 is installed. If not, it prompts the user to install it and then installs it using sudo apt install.
 - environmental-variables:: Makes a script named setup.sh executable and then runs it. This script likely sets certain environment variables needed for the project.
 - installing-docker:: Checks if Docker version 24.0.1 or above is installed. If not, it prompts the user to install it and then installs it using the official Docker repository.
-- kratosconfig:: Navigates to the docker/Kratos_config folder and runs docker compose -f quickstart.yml up to start Docker containers for the project.
+- run-app:: Navigates to the cd app folder and runs uvicorn main:app --port=7000 --debug --reload to start the app
 
 ## Default Target:
 

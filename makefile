@@ -4,7 +4,7 @@ ACTIVATE_VENV := . $(ENVPATH)/bin/activate &&
 
 SHELL := /bin/bash
 
-.PHONY: pre-requistite venv-configure venv-activate install-dependencies check-package environmental-variables installing-docker kratosconfig
+.PHONY: pre-requistite venv-configure venv-activate install-dependencies check-package environmental-variables installing-docker run-app
 
 pre-requisite: #basic python packages to run the makefile
 	@if ! dpkg -s python3-pip &> /dev/null; then \
@@ -45,22 +45,6 @@ check-package: ## Check if packages from requirements.txt are installed
 		echo "Some packages are missing or failed to install."; \
 	fi
 
-installing-psql:
-	@if psql --version | grep -q "15.3"; then \
-		echo "You already have psql 15.3 installed."; \
-	else \
-		read -p "You currently have a different version of psql installed. Do you want to proceed with installing psql 15.3? (y/N) " response; \
-		if [[ $$response =~ ^[Yy]$$ ]]; then \
-			echo "Installing psql 15.3..."; \
-			sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $$(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'; \
-			wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo tee /etc/apt/trusted.gpg.d/pgdg.asc &>/dev/null; \
-			sudo apt update; \
-			sudo apt remove postgresql postgresql-contrib; \
-			sudo apt install postgresql-15 postgresql-contrib-15; \
-		else \
-			echo "Aborted installation."; \
-		fi; \
-	fi
 
 installing-psql:
 	@if psql --version | grep -q "15.3"; then \
@@ -113,10 +97,8 @@ installing-docker:
 		fi \
 	fi
 
-
-
-kratosconfig:
-	cd docker/Kratos_config && sudo docker compose -f quickstart.yml up 
+run-app:
+	cd app && uvicorn main:app --port=7000 --debug --reload 
 
 
 setup:
@@ -129,9 +111,4 @@ setup:
 	make installing-psql
 	make environmental-variables
 	make installing-docker
-	make kratosconfig
-
-
-
-
-
+	make run-app
