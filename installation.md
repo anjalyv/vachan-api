@@ -63,10 +63,6 @@ During the execution of this command, the Makefile will initiate and prompt for 
 ```make installing-psql```
 <br>
 
-####  **To populate your database with data**
-
-```make into-database```
-<br>
 
 #### **To modify your _.bashrc_ file**
 
@@ -81,11 +77,6 @@ During the execution of this command, the Makefile will initiate and prompt for 
 
 * Avoid using passwords that closely resemble  your username and to run it
 
-
-#### **To install Usfm-Grammar 2.0**
-
-```make installing-usfmgrammar```
-<br>
 
 #### **To install Docker and Docker-Compose**
 

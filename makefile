@@ -4,7 +4,7 @@ ACTIVATE_VENV := . $(ENVPATH)/bin/activate &&
 
 SHELL := /bin/bash
 
-.PHONY: pre-requistite venv-configure venv-activate install-dependencies check-package into-database environmental-variables installing-usfmgrammar installing-docker kratosconfig
+.PHONY: pre-requistite venv-configure venv-activate install-dependencies check-package environmental-variables installing-docker kratosconfig
 
 pre-requisite: #basic python packages to run the makefile
 	@if ! dpkg -s python3-pip &> /dev/null; then \
@@ -62,21 +62,27 @@ installing-psql:
 		fi; \
 	fi
 
-
-into-database: ## Accessing the database folder
-	sudo -u postgres psql -tc "SELECT 1 FROM pg_database WHERE datname='vachan_db'" | grep -q 1 || sudo -u postgres psql -c "CREATE DATABASE vachan_db"
- 
-	cd db && sudo -u postgres psql vachan_db < seed_DB.sql
-
+installing-psql:
+	@if psql --version | grep -q "15.3"; then \
+        echo "You already have psql 15.3 installed."; \
+	else \
+        read -p "You currently have a different version of psql installed. Do you want to proceed with installing psql 15.3? (y/N) " response; \
+        if [[ $$response =~ ^[Yy]$$ ]]; then \
+            echo "Installing psql 15.3..."; \
+            sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'; \
+            wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo tee /etc/apt/trusted.gpg.d/pgdg.asc &>/dev/null; \
+            sudo apt update; \
+            sudo apt remove postgresql postgresql-contrib; \
+            sudo apt install postgresql-15 postgresql-contrib-15; \
+        else \
+            echo "Aborted installation."; \
+        fi; \
+    fi
 
 
 environmental-variables:
 	chmod +x setup.sh
 	./setup.sh
-
-installing-usfmgrammar:
-	sudo apt install npm
-	sudo npm install -g usfm-grammar@2.2.0
 
 installing-docker:
 	@if docker --version | grep -q "Docker version 24.0."; then \
@@ -110,7 +116,7 @@ installing-docker:
 
 
 kratosconfig:
-	cd docker/Kratos_config && docker compose -f quickstart.yml up 
+	cd docker/Kratos_config && sudo docker compose -f quickstart.yml up 
 
 
 setup:
@@ -121,9 +127,7 @@ setup:
 	make install-dependencies
 	make check-package
 	make installing-psql
-	make into-database
 	make environmental-variables
-	make installing-usfmgrammar
 	make installing-docker
 	make kratosconfig
 
