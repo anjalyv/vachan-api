@@ -113,7 +113,7 @@ INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
 
 If you need to run the app on another port `--port` can be used. To run in debug mode `--debug` can be used
 
-```uvicorn main:app --port=7000 --debug```
+```uvicorn main:app --port=7000 --debug --reload```
 
 ### Access Documentations
 
