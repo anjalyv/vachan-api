@@ -345,7 +345,7 @@ services:
      - VE-network
 
  vachan-ai:
-    image: vachanengine/vachan-ai:0.0.0-alpha.14
+    image: vachanengine/vachan-ai:0.0.0-alpha.15
     healthcheck:
      timeout: 45s
      interval: 10s
@@ -390,6 +390,7 @@ services:
      - VACHAN_AI_CRON_MINUTE=${VACHAN_AI_CRON_MINUTE:-30}
      - VACHAN_AI_BASEPATH=/v2/ai
      - VACHAN_USE_VE_AUTH=${VACHAN_USE_VE_AUTH:-True}
+     - VACHAN_AI_DFNT_SAMPLING_RATE=${VACHAN_AI_DFNT_SAMPLING_RATE:-48000}
      - VACHAN_DOMAIN=http://vachan-access:8007
      - VACHAN_AI_DOMAIN=http://vachan-api
     command: uvicorn main:app --host 0.0.0.0 --port 8009
@@ -419,7 +420,7 @@ services:
 
 
  worker:
-    image: vachanengine/vachan-ai:0.0.0-alpha.14
+    image: vachanengine/vachan-ai:0.0.0-alpha.15
     healthcheck:
      timeout: 45s
      interval: 10s
@@ -433,6 +434,7 @@ services:
      - VACHAN_POSTGRES_DATABASE=${VACHAN_POSTGRES_DATABASE:-vachan_dev}
      - VACHAN_POSTGRES_SCHEMA=${VACHAN_POSTGRES_SCHEMA:-aischema}
      - VACHAN_POSTGRES_PORT=5432
+     - VACHAN_AI_DFNT_SAMPLING_RATE=${VACHAN_AI_DFNT_SAMPLING_RATE:-48000}
      - VACHAN_AI_DATA_PATH=${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}
      - VACHAN_AI_SERVED_MODEL_URI=${VACHAN_AI_SERVED_MODEL_URI:-http://dov2prodconn.bridgeconn.com:8085/v2/models}
      - VACHAN_AI_MLSERVER_REQUEST_TIMEOUT=120
