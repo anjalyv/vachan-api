@@ -379,7 +379,7 @@ services:
      - VACHAN_AI_LOGGING_LEVEL=INFO
      - VACHAN_LOGGING_LEVEL=INFO
      - VACHAN_AI_ENV=${VACHAN_AI_ENV:-Production}
-     - VACHAN_AI_MLSERVER_REQUEST_TIMEOUT=120
+     - VACHAN_AI_MLSERVER_REQUEST_TIMEOUT=${VACHAN_AI_MLSERVER_REQUEST_TIMEOUT:-120}
      - PYTHONPATH=/app/app/core/model_access/ai_model_core.py:/app/app/core/cloud_operations
      - VACHAN_REDIS_PASS=${VACHAN_REDIS_PASS:-vsfrgetd}
      - VACHAN_AI_DELETION_PERIOD=${VACHAN_AI_DELETION_PERIOD:-14}
@@ -436,7 +436,7 @@ services:
      - VACHAN_AI_OPEN_VOICE_MIN_DURATION=${VACHAN_AI_OPEN_VOICE_MIN_DURATION:-3}
      - VACHAN_AI_DATA_PATH=${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}
      - VACHAN_AI_SERVED_MODEL_URI=${VACHAN_AI_SERVED_MODEL_URI:-http://dov2prodconn.bridgeconn.com:8085/v2/models}
-     - VACHAN_AI_MLSERVER_REQUEST_TIMEOUT=120
+     - VACHAN_AI_MLSERVER_REQUEST_TIMEOUT=${VACHAN_AI_MLSERVER_REQUEST_TIMEOUT:-120}
      - VACHAN_USE_VE_AUTH=${VACHAN_USE_VE_AUTH:-True}
      - PYTHONPATH=/app/app/core/model_access/ai_model_core.py:/app/app/core/cloud_operations
     command: rq worker --url redis://:${VACHAN_REDIS_PASS}@redis:6379
