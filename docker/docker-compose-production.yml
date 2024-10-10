@@ -141,45 +141,45 @@ services:
     networks:
      - VE-network
 
- vachan-api-test:
-  build:
-   context: ../
-   dockerfile: ./docker/Dockerfile
-  healthcheck:
-   timeout: 45s
-   interval: 10s
-   retries: 10
-  environment:
-   - VACHAN_POSTGRES_HOST=vachan-db
-   - VACHAN_POSTGRES_USER=${VACHAN_POSTGRES_USER:-postgres}
-   - VACHAN_POSTGRES_PASSWORD=${VACHAN_POSTGRES_PASSWORD:-password}
-   - VACHAN_POSTGRES_DATABASE=${VACHAN_POSTGRES_DATABASE:-vachan_dev}
-   - VACHAN_POSTGRES_PORT=5432
-   - VACHAN_KRATOS_PUBLIC_URL=http://kratos:4433/
-   - VACHAN_KRATOS_ADMIN_URL=http://kratos:4434/
-   - VACHAN_SUPER_USERNAME=${VACHAN_SUPER_USERNAME:-super@admin.com}
-   - VACHAN_GITLAB_TOKEN=${VACHAN_GITLAB_TOKEN}
-   - VACHAN_SUPER_PASSWORD=${VACHAN_SUPER_PASSWORD:-Just4Complexity!}
-   - VACHAN_TEST_MODE="False"
-   - VACHAN_LOGGING_LEVEL=INFO
-   - VACHAN_DOMAIN=${VACHAN_DOMAIN:-http://localhost:8000}
-  command: python -m pytest
-  volumes:
-   - logs-test-vol:/app/logs
-  restart: "no"
-  expose:
-   - 8000
-  links:
-   - vachan-db
-   - kratos
-  depends_on:
-   - kratos-postgresd
-   - kratos
-   - vachan-db
-  profiles:
-   - testing
-  networks:
-   - VE-network
+#  vachan-api-test:
+#   build:
+#    context: ../
+#    dockerfile: ./docker/Dockerfile
+#   healthcheck:
+#    timeout: 45s
+#    interval: 10s
+#    retries: 10
+#   environment:
+#    - VACHAN_POSTGRES_HOST=vachan-db
+#    - VACHAN_POSTGRES_USER=${VACHAN_POSTGRES_USER:-postgres}
+#    - VACHAN_POSTGRES_PASSWORD=${VACHAN_POSTGRES_PASSWORD:-password}
+#    - VACHAN_POSTGRES_DATABASE=${VACHAN_POSTGRES_DATABASE:-vachan_dev}
+#    - VACHAN_POSTGRES_PORT=5432
+#    - VACHAN_KRATOS_PUBLIC_URL=http://kratos:4433/
+#    - VACHAN_KRATOS_ADMIN_URL=http://kratos:4434/
+#    - VACHAN_SUPER_USERNAME=${VACHAN_SUPER_USERNAME:-super@admin.com}
+#    - VACHAN_GITLAB_TOKEN=${VACHAN_GITLAB_TOKEN}
+#    - VACHAN_SUPER_PASSWORD=${VACHAN_SUPER_PASSWORD:-Just4Complexity!}
+#    - VACHAN_TEST_MODE="False"
+#    - VACHAN_LOGGING_LEVEL=INFO
+#    - VACHAN_DOMAIN=${VACHAN_DOMAIN:-http://localhost:8000}
+#   command: python -m pytest
+#   volumes:
+#    - logs-test-vol:/app/logs
+#   restart: "no"
+#   expose:
+#    - 8000
+#   links:
+#    - vachan-db
+#    - kratos
+#   depends_on:
+#    - kratos-postgresd
+#    - kratos
+#    - vachan-db
+#   profiles:
+#    - testing
+#   networks:
+#    - VE-network
 
  vachan-demos:
     image: vachanengine/vachan-demos:v2.0.0-alpha.13
@@ -345,7 +345,7 @@ services:
      - VE-network
 
  vachan-ai:
-    image: vachanengine/vachan-ai:0.0.0-alpha.13
+    image: vachanengine/vachan-ai:0.0.0-alpha.15
     healthcheck:
      timeout: 45s
      interval: 10s
@@ -370,13 +370,12 @@ services:
      - VACHAN_AI_MODEL_SETTINGS_DIR=${VACHAN_AI_MODEL_SETTINGS_DIR:-serving_model}
      - VACHAN_AI_REQUEST_TIMEOUT=${VACHAN_AI_REQUEST_TIMEOUT:-60}
 
-     - VACHAN_AI_AWS_ACCESS_KEY=${VACHAN_AI_AWS_ACCESS_KEY}
-     - VACHAN_AI_AWS_SECRET_ACCESS_KEY=${VACHAN_AI_AWS_SECRET_ACCESS_KEY}
      - VACHAN_AI_S3_BUCKET=${VACHAN_AI_S3_BUCKET}
-     - VACHAN_AI_AWS_ACCOUNT_REGION=${VACHAN_AI_AWS_ACCOUNT_REGION}
-     
+     - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+     - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
 
      - VACHAN_AI_DATA_PATH=${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}
+     - VACHAN_AI_OPEN_VOICE_MIN_DURATION=${VACHAN_AI_OPEN_VOICE_MIN_DURATION:-3}
      - VACHAN_AI_LOGGING_LEVEL=INFO
      - VACHAN_LOGGING_LEVEL=INFO
      - VACHAN_AI_ENV=${VACHAN_AI_ENV:-Production}
@@ -388,6 +387,8 @@ services:
      - VACHAN_AI_CRON_HOUR=${VACHAN_AI_CRON_HOUR:-12}
      - VACHAN_AI_CRON_MINUTE=${VACHAN_AI_CRON_MINUTE:-30}
      - VACHAN_AI_BASEPATH=/v2/ai
+     - VACHAN_USE_VE_AUTH=${VACHAN_USE_VE_AUTH:-True}
+     - VACHAN_AI_DFNT_SAMPLING_RATE=${VACHAN_AI_DFNT_SAMPLING_RATE:-48000}
      - VACHAN_DOMAIN=http://vachan-access:8007
      - VACHAN_AI_DOMAIN=http://vachan-api
     command: uvicorn main:app --host 0.0.0.0 --port 8009
@@ -417,7 +418,7 @@ services:
 
 
  worker:
-    image: vachanengine/vachan-ai:0.0.0-alpha.13
+    image: vachanengine/vachan-ai:0.0.0-alpha.15
     healthcheck:
      timeout: 45s
      interval: 10s
@@ -431,9 +432,12 @@ services:
      - VACHAN_POSTGRES_DATABASE=${VACHAN_POSTGRES_DATABASE:-vachan_dev}
      - VACHAN_POSTGRES_SCHEMA=${VACHAN_POSTGRES_SCHEMA:-aischema}
      - VACHAN_POSTGRES_PORT=5432
+     - VACHAN_AI_DFNT_SAMPLING_RATE=${VACHAN_AI_DFNT_SAMPLING_RATE:-48000}
+     - VACHAN_AI_OPEN_VOICE_MIN_DURATION=${VACHAN_AI_OPEN_VOICE_MIN_DURATION:-3}
      - VACHAN_AI_DATA_PATH=${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}
      - VACHAN_AI_SERVED_MODEL_URI=${VACHAN_AI_SERVED_MODEL_URI:-http://dov2prodconn.bridgeconn.com:8085/v2/models}
      - VACHAN_AI_MLSERVER_REQUEST_TIMEOUT=${VACHAN_AI_MLSERVER_REQUEST_TIMEOUT:-120}
+     - VACHAN_USE_VE_AUTH=${VACHAN_USE_VE_AUTH:-True}
      - PYTHONPATH=/app/app/core/model_access/ai_model_core.py:/app/app/core/cloud_operations
     command: rq worker --url redis://:${VACHAN_REDIS_PASS}@redis:6379
     links:
