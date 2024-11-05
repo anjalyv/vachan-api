@@ -345,7 +345,7 @@ services:
      - VE-network
 
  vachan-ai:
-    image: vachanengine/vachan-ai:0.0.0-alpha.16
+    image: vachanengine/vachan-ai:0.0.0-alpha.17
     healthcheck:
      timeout: 45s
      interval: 10s
@@ -382,6 +382,7 @@ services:
      - VACHAN_AI_MLSERVER_REQUEST_TIMEOUT=${VACHAN_AI_MLSERVER_REQUEST_TIMEOUT:-120}
      - PYTHONPATH=/app/app/core/model_access/ai_model_core.py:/app/app/core/cloud_operations
      - VACHAN_REDIS_PASS=${VACHAN_REDIS_PASS:-vsfrgetd}
+     - VACHAN_AI_REDIS_QUE_TIMEOUT=${VACHAN_AI_REDIS_QUE_TIMEOUT:-900}
      - VACHAN_AI_DELETION_PERIOD=${VACHAN_AI_DELETION_PERIOD:-14}
      - VACHAN_AI_CRON_DAY=${VACHAN_AI_CRON_DAY:-MON}
      - VACHAN_AI_CRON_HOUR=${VACHAN_AI_CRON_HOUR:-12}
@@ -389,6 +390,7 @@ services:
      - VACHAN_AI_BASEPATH=/v2/ai
      - VACHAN_USE_VE_AUTH=${VACHAN_USE_VE_AUTH:-True}
      - VACHAN_AI_DFNT_SAMPLING_RATE=${VACHAN_AI_DFNT_SAMPLING_RATE:-48000}
+     - VACHAN_AI_INA_SAMPLING_RATE=${VACHAN_AI_INA_SAMPLING_RATE:-16000}
      - VACHAN_DOMAIN=http://vachan-access:8007
      - VACHAN_AI_DOMAIN=http://vachan-api
     command: uvicorn main:app --host 0.0.0.0 --port 8009
@@ -418,7 +420,7 @@ services:
 
 
  worker:
-    image: vachanengine/vachan-ai:0.0.0-alpha.16
+    image: vachanengine/vachan-ai:0.0.0-alpha.17
     healthcheck:
      timeout: 45s
      interval: 10s
@@ -432,7 +434,9 @@ services:
      - VACHAN_POSTGRES_DATABASE=${VACHAN_POSTGRES_DATABASE:-vachan_dev}
      - VACHAN_POSTGRES_SCHEMA=${VACHAN_POSTGRES_SCHEMA:-aischema}
      - VACHAN_POSTGRES_PORT=5432
+     - VACHAN_AI_REDIS_QUE_TIMEOUT=${VACHAN_AI_REDIS_QUE_TIMEOUT:-900}
      - VACHAN_AI_DFNT_SAMPLING_RATE=${VACHAN_AI_DFNT_SAMPLING_RATE:-48000}
+     - VACHAN_AI_INA_SAMPLING_RATE=${VACHAN_AI_INA_SAMPLING_RATE:-16000}
      - VACHAN_AI_OPEN_VOICE_MIN_DURATION=${VACHAN_AI_OPEN_VOICE_MIN_DURATION:-3}
      - VACHAN_AI_DATA_PATH=${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}
      - VACHAN_AI_SERVED_MODEL_URI=${VACHAN_AI_SERVED_MODEL_URI:-http://dov2prodconn.bridgeconn.com:8085}
