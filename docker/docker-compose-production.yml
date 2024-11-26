@@ -391,6 +391,7 @@ services:
      - VACHAN_USE_VE_AUTH=${VACHAN_USE_VE_AUTH:-True}
      - VACHAN_AI_DFNT_SAMPLING_RATE=${VACHAN_AI_DFNT_SAMPLING_RATE:-48000}
      - VACHAN_AI_INA_SAMPLING_RATE=${VACHAN_AI_INA_SAMPLING_RATE:-16000}
+     - VACHAN_AI_MLFLOW_DST_PATH=${VACHAN_AI_MLFLOW_DST_PATH:-/var/common/mlflow}
      - VACHAN_DOMAIN=http://vachan-access:8007
      - VACHAN_AI_DOMAIN=http://vachan-api
     command: uvicorn main:app --host 0.0.0.0 --port 8009
