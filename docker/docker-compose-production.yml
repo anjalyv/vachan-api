@@ -345,7 +345,7 @@ services:
      - VE-network
 
  vachan-ai:
-    image: vachanengine/vachan-ai:0.0.0-alpha.18
+    image: vachanengine/vachan-ai:0.0.0-alpha.19
     healthcheck:
      timeout: 45s
      interval: 10s
@@ -375,7 +375,7 @@ services:
      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
 
      - VACHAN_AI_DATA_PATH=${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}
-     - VACHAN_AI_OPEN_VOICE_MIN_DURATION=${VACHAN_AI_OPEN_VOICE_MIN_DURATION:-3}
+     - VACHAN_AI_OPEN_VOICE_MIN_DURATION=${VACHAN_AI_OPEN_VOICE_MIN_DURATION:-10}
      - VACHAN_AI_LOGGING_LEVEL=INFO
      - VACHAN_LOGGING_LEVEL=INFO
      - VACHAN_AI_ENV=${VACHAN_AI_ENV:-Production}
@@ -391,6 +391,7 @@ services:
      - VACHAN_USE_VE_AUTH=${VACHAN_USE_VE_AUTH:-True}
      - VACHAN_AI_DFNT_SAMPLING_RATE=${VACHAN_AI_DFNT_SAMPLING_RATE:-48000}
      - VACHAN_AI_INA_SAMPLING_RATE=${VACHAN_AI_INA_SAMPLING_RATE:-16000}
+     - VACHAN_AI_MLFLOW_DST_PATH=${VACHAN_AI_MLFLOW_DST_PATH:-/var/common/mlflow}
      - VACHAN_DOMAIN=http://vachan-access:8007
      - VACHAN_AI_DOMAIN=http://vachan-api
     command: uvicorn main:app --host 0.0.0.0 --port 8009
@@ -420,7 +421,7 @@ services:
 
 
  worker:
-    image: vachanengine/vachan-ai:0.0.0-alpha.18
+    image: vachanengine/vachan-ai:0.0.0-alpha.19
     healthcheck:
      timeout: 45s
      interval: 10s
@@ -437,12 +438,13 @@ services:
      - VACHAN_AI_REDIS_QUE_TIMEOUT=${VACHAN_AI_REDIS_QUE_TIMEOUT:-900}
      - VACHAN_AI_DFNT_SAMPLING_RATE=${VACHAN_AI_DFNT_SAMPLING_RATE:-48000}
      - VACHAN_AI_INA_SAMPLING_RATE=${VACHAN_AI_INA_SAMPLING_RATE:-16000}
-     - VACHAN_AI_OPEN_VOICE_MIN_DURATION=${VACHAN_AI_OPEN_VOICE_MIN_DURATION:-3}
+     - VACHAN_AI_OPEN_VOICE_MIN_DURATION=${VACHAN_AI_OPEN_VOICE_MIN_DURATION:-10}
      - VACHAN_AI_DATA_PATH=${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}
      - VACHAN_AI_SERVED_MODEL_URI=${VACHAN_AI_SERVED_MODEL_URI:-http://dov2prodconn.bridgeconn.com:8085}
      - VACHAN_AI_MLSERVER_REQUEST_TIMEOUT=${VACHAN_AI_MLSERVER_REQUEST_TIMEOUT:-120}
      - VACHAN_USE_VE_AUTH=${VACHAN_USE_VE_AUTH:-True}
      - PYTHONPATH=/app/app/core/model_access/ai_model_core.py:/app/app/core/cloud_operations
+     - VACHAN_AI_LOGGING_LEVEL=INFO
     command: rq worker --url redis://:${VACHAN_REDIS_PASS}@redis:6379
     links:
       - redis
