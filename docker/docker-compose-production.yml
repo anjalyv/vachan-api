@@ -345,7 +345,7 @@ services:
      - VE-network
 
  vachan-ai:
-    image: vachanengine/vachan-ai:0.0.0-alpha.18
+    image: vachanengine/vachan-ai:0.0.0-alpha.19
     healthcheck:
      timeout: 45s
      interval: 10s
@@ -420,7 +420,7 @@ services:
 
 
  worker:
-    image: vachanengine/vachan-ai:0.0.0-alpha.18
+    image: vachanengine/vachan-ai:0.0.0-alpha.19
     healthcheck:
      timeout: 45s
      interval: 10s
