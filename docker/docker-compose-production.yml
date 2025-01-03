@@ -391,11 +391,8 @@ services:
      - VACHAN_AI_DFNT_SAMPLING_RATE=${VACHAN_AI_DFNT_SAMPLING_RATE:-48000}
      - VACHAN_AI_INA_SAMPLING_RATE=${VACHAN_AI_INA_SAMPLING_RATE:-16000}
      - VACHAN_AI_MLFLOW_DST_PATH=${VACHAN_AI_MLFLOW_DST_PATH:-/var/common/mlflow}
-     - VACHAN_DOMAIN=${VACHAN_DOMAIN:-http://vachan-access:8007}
+     - VACHAN_DOMAIN=http://vachan-access:8007
      - VACHAN_AI_DOMAIN=${VACHAN_AI_DOMAIN:-https://api.vachanengine.org/}
-
-
-
     command: uvicorn main:app --host 0.0.0.0 --port 8009
     volumes:
      - ${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}/docker-volumes/ai-logs-vol:/app/logs

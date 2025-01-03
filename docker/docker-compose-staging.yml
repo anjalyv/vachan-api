@@ -3,7 +3,7 @@ services:
  kratos-postgresd:
     image: postgres:9.6
     ports:
-      - "5432:5432"
+      - "5437:5432"
     expose:
       - 5432
     restart: always
@@ -87,7 +87,7 @@ services:
      - 5432
     ports:
      # HOST:CONTAINER
-     - "5433:5432"
+     - "5436:5432"
     networks:
      - VE-network
     volumes:
@@ -384,11 +384,8 @@ services:
      - VACHAN_AI_BASEPATH=/v2/ai
      - VACHAN_USE_VE_AUTH=${VACHAN_USE_VE_AUTH:-True}
      - VACHAN_AI_MLFLOW_DST_PATH=${VACHAN_AI_MLFLOW_DST_PATH:-/var/common/mlflow}
-     - VACHAN_DOMAIN=${VACHAN_DOMAIN:-http://vachan-access:8007}
+     - VACHAN_DOMAIN=http://vachan-access:8007
      - VACHAN_AI_DOMAIN=${VACHAN_AI_DOMAIN:-https://api.vachanengine.org/}
-  
-
-
     command: uvicorn main:app --host 0.0.0.0 --port 8009
     volumes:
      - ${VACHAN_AI_DATA_PATH:-/home/gitautodeploy/vachan_ai_data}/docker-volumes/ai-logs-vol:/app/logs
