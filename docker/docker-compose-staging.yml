@@ -3,7 +3,7 @@ services:
  kratos-postgresd:
     image: postgres:9.6
     ports:
-      - "5437:5432"
+      - "5432:5432"
     expose:
       - 5432
     restart: always
@@ -87,7 +87,7 @@ services:
      - 5432
     ports:
      # HOST:CONTAINER
-     - "5436:5432"
+     - "5433:5432"
     networks:
      - VE-network
     volumes:
