@@ -345,7 +345,7 @@ services:
      - VE-network
 
  vachan-ai:
-    image: vachanengine/vachan-ai:0.0.0-alpha.20
+    image: vachanengine/vachan-ai:25.1.16-beta
     healthcheck:
      timeout: 45s
      interval: 10s
@@ -420,7 +420,7 @@ services:
 
 
  worker:
-    image: vachanengine/vachan-ai:0.0.0-alpha.20
+    image: vachanengine/vachan-ai:25.1.16-beta
     healthcheck:
      timeout: 45s
      interval: 10s
@@ -444,7 +444,8 @@ services:
      - VACHAN_USE_VE_AUTH=${VACHAN_USE_VE_AUTH:-True}
      - PYTHONPATH=/app/app/core/model_access/ai_model_core.py:/app/app/core/cloud_operations
      - VACHAN_AI_LOGGING_LEVEL=INFO
-    command: rq worker --url redis://:${VACHAN_REDIS_PASS}@redis:6379
+     - WORKER_COUNT=${WORKER_COUNT:-4}
+    command: rq worker-pool -n ${WORKER_COUNT} --url redis://:vsfrgetd@redis:6379
     links:
       - redis
       - vachan-db
