@@ -445,7 +445,7 @@ services:
      - PYTHONPATH=/app/app/core/model_access/ai_model_core.py:/app/app/core/cloud_operations
      - VACHAN_AI_LOGGING_LEVEL=INFO
      - WORKER_COUNT=${WORKER_COUNT:-4}
-    command: rq worker-pool -n ${WORKER_COUNT} --url redis://:vsfrgetd@redis:6379
+    command: rq worker-pool -n ${WORKER_COUNT} --url redis://:${VACHAN_REDIS_PASS}@redis:6379
     links:
       - redis
       - vachan-db
